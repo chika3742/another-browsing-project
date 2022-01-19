@@ -10,46 +10,46 @@ meta:
 layout:
   Row:
     children:
-      - Column:
-          children:
-            - Flexible:
-                child:
-                  Text:
-                    data: "Text string"
-                    style:
-                      color: "red"
-                      fontSize: 22
-                      fontWeight: .bold
-            - Text:
-                data: @content
-      - Text:
-          data: "Text"
+      Column:
+        children:
+          Flexible:
+            child:
+              Text:
+                data: "Text string"
+                style:
+                  color: "red"
+                  fontSize: 22
+                  fontWeight: .bold
+          Text:
+            data: @content
+        - Text:
+            data: "Text"
 
-@content:
+  @content:
   # TODO: エラー回避 (ルール作成)
-  { heading }
+    { heading }
 
-  あｓだｓだｓだｄっｓだだ
-  
-  || sub heading
-  
-  あｓだｓだｓだｓ
-  
-  ^ sub sub heading
-  
-  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-  Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+    あｓだｓだｓだｄっｓだだ
+    
+    || sub heading
+    
+    あｓだｓだｓだｓ
+    
+    ^ sub sub heading
+    
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
     # paragraph break
-  Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-  Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-  
-  *bold text*
-  `italic text`
-  =Strikethrough=
-  [link text | https://example.com]
-  <https://example.com/linkify>
-  
-  ** escaping `` escaping == escaping [[ escaping ]]
-
-  ~ unordered list1
-  ~ unordered list2
+    Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+    Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+    
+    *bold text*
+    `italic text`
+    =Strikethrough=
+    [link text -> https://example.com]
+    <https://example.com/linkify>
+    
+    ** escaping `` escaping == escaping [[ escaping ]]
+    
+    ~ unordered list1
+    ~ unordered list2

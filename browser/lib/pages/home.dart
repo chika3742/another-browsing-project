@@ -42,6 +42,6 @@ class _HomePageState extends State<HomePage> {
     var response = await http.get(Uri.parse("https://another-browsing.web.app/template.abml"));
     var body = response.body;
 
-    print(parse(body));
+    parse(body);
   }
 }

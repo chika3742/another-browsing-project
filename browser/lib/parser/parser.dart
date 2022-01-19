@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:another_browser/parser/lexer.dart';
 import 'package:another_browser/parser/types.dart';
 
@@ -26,43 +28,85 @@ AbmlObject? parse(String input) {
     tokenizedLines.add(tokenized);
   }
 
-  print(_parse(tokenizedLines.expand((element) => element).toList()));
-  // print(_parse(tokenizedLines));
-
-  return null;
+  return _parse(tokenizedLines.expand((element) => element).toList());
 }
 
 dynamic _parse(List<dynamic> tokenized) {
-  var result = <Token>[];
+  var map = <MapEntry<String, dynamic>>[];
+  var seeker = TokenSeeker(tokenized);
 
-  var tokenId = -1;
-  var currentIndent = 0;
-  var nestList = <Token>[];
+  print(tokenized);
 
-  for (var token in tokenized) {
-    tokenId++;
-    print(nestList);
+  map = _parseObject(seeker, 0);
+
+  print(Map.fromEntries(map));
+}
+
+List<MapEntry<String, dynamic>> _parseObject(TokenSeeker seeker, int currentIndent) {
+  var map = <MapEntry<String, dynamic>>[];
+
+  String? key;
+  dynamic value;
+  while (seeker.next()) {
+    var token = seeker.current;
 
     if (token is Key) {
-      nestList.add(Token(token, parent: nestList.isNotEmpty ? nestList.last : null));
+      key = token.value;
+    }
+    if (token is Value) {
+      value = token;
+      if (key == null) {
+        throw ParsingException("Key not found for value $value");
+      }
+      map.add(MapEntry(key, value));
     }
 
     if (token is Colon) {
-      // do nothing
+      if (seeker.peek() is Indent) {
+        if (key == null) {
+          throw ParsingException("Key not found for map");
+        }
+        if (seeker.peek(2) is Hyphen) {
+          map.add(MapEntry(key, parseArray(seeker, currentIndent + 1)));
+        } else {
+          map.add(MapEntry(key, Map.fromEntries(_parseObject(seeker, currentIndent + 1))));
+        }
+      }
     }
 
     if (token is Indent) {
-      if (currentIndent > token.count) {
-        result.addAll(nestList.getRange(token.count ~/ 2, nestList.length));
-        nestList.removeRange(token.count ~/ 2, nestList.length);
+      if (token.count < currentIndent) {
+        seeker.back();
+        break;
       }
-      currentIndent = token.count;
     }
 
-    if (token is Value) {
-      nestList.last.value = token;
+  }
+
+  return map;
+}
+
+List<dynamic> parseArray(TokenSeeker seeker, int currentIndent) {
+  var array = [];
+  while (seeker.next()) {
+    var token = seeker.current;
+
+    if (token is Hyphen) {
+      // do nothing
+    }
+
+    if (token is ListEntry) {
+      array.add(token.value);
+    }
+
+    if (token is Colon) {
+      print("colon!!");
+    }
+
+    if (token is Indent && token.count < currentIndent) {
+      break;
     }
   }
 
-  print(result);
+  return array;
 }

@@ -25,7 +25,7 @@ List<dynamic> tokenize(String line, int lineNum) {
         } else {
           tokenizingState = TokenizingState.key;
         }
-        if (indent >= 1) lexicalSeq.add(Indent(indent));
+        lexicalSeq.add(Indent(indent ~/ 2));
       }
     }
 
@@ -37,6 +37,7 @@ List<dynamic> tokenize(String line, int lineNum) {
       } else if (char == "-") {
         lexicalSeq.add(Hyphen());
         tokenizingState = TokenizingState.waitForListEntry;
+        continue;
       } else {
         // confirmed expression
         var key = keyBuilder.toString();
