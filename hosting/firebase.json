@@ -7,10 +7,11 @@
       "**/.*",
       "**/node_modules/**"
     ],
-    "rewrites": [
+    "redirects": [
       {
-        "source": "/:path**",
-        "destination": "/:path.abml"
+        "source": "/",
+        "destination": "/template.abml",
+        "type": 307
       }
     ]
   }

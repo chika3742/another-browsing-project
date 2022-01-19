@@ -100,7 +100,13 @@ List<dynamic> parseArray(TokenSeeker seeker, int currentIndent) {
     }
 
     if (token is Colon) {
-      print("colon!!");
+      if (seeker.peek() is Indent) {
+        if (seeker.peek(2) is Hyphen) {
+          array.add(parseArray(seeker, currentIndent + 1));
+        } else {
+          array.add(Map.fromEntries(_parseObject(seeker, currentIndent + 1)));
+        }
+      }
     }
 
     if (token is Indent && token.count < currentIndent) {
