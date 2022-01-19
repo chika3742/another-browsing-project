@@ -1,0 +1,17 @@
+{
+  "hosting": {
+    "public": "public",
+    "target": "another-browsing",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "/:path**",
+        "destination": "/:path.abml"
+      }
+    ]
+  }
+}

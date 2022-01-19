@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "chikach-net"
+  },
+  "targets": {
+    "chikach-net": {
+      "hosting": {
+        "another-browsing": [
+          "another-browsing"
+        ]
+      }
+    }
+  }
+}
