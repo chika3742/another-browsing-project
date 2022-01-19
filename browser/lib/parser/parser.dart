@@ -1,11 +1,10 @@
-import 'dart:ffi';
-
 import 'package:another_browser/parser/lexer.dart';
+import 'package:another_browser/parser/token_seeker.dart';
 import 'package:another_browser/parser/types.dart';
 
-AbmlObject? parse(String input) {
-  var result = {};
+import 'exception.dart';
 
+AbmlObject? parse(String input) {
   var lines = input.split("\n");
   var tokenizedLines = <dynamic>[];
 

@@ -1,5 +1,7 @@
 import 'package:another_browser/parser/types.dart';
 
+import 'exception.dart';
+
 List<dynamic> tokenize(String line, int lineNum) {
   var lexicalSeq = [];
   var tokenizingState = TokenizingState.lineStart;

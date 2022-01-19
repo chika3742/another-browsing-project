@@ -1,3 +1,5 @@
+import 'package:another_browser/parser/exception.dart';
+
 class AbmlObject {
   AbmlMeta? meta;
 
@@ -60,9 +62,23 @@ class Value {
 
   Value(this.lexical);
 
+  int asInt() {
+    return int.parse(lexical);
+  }
+
+  dynamic asEnum(List<Enum> enumValues) {
+    if (!lexical.startsWith("\\.")) {
+      throw ParsingException("This value is not enum type");
+    }
+
+    return enumValues.firstWhere((e) => lexical.replaceRange(0, 0, "") == e.name, orElse: () {
+      throw ParsingException("No matching enum value");
+    });
+  }
+
   @override
   String toString() {
-    return lexical;
+    return lexical.startsWith('"') && lexical.endsWith('"') ? lexical.substring(1, lexical.length - 1) : lexical;
   }
 }
 
@@ -107,47 +123,4 @@ enum TokenizingState {
 enum LineTokenizingState {
   normal,
   contentsWriting,
-}
-
-class TokenSeeker {
-  var map = {};
-  var cursor = -1;
-  List<dynamic> tokens;
-
-  get length => tokens.length;
-
-  get current => tokens[cursor];
-
-  TokenSeeker(this.tokens);
-
-  dynamic peek([int index = 1]) {
-    return tokens.length >= cursor + index + 1 ?  tokens[cursor + index] : null;
-  }
-
-  bool next() {
-    if (cursor + 1 < length) {
-      cursor++;
-      return true;
-    }
-    return false;
-  }
-
-  bool back() {
-    if (cursor - 1 >= 0) {
-      cursor--;
-      return true;
-    }
-    return false;
-  }
-}
-
-class ParsingException implements Exception {
-  String? message;
-
-  ParsingException([this.message]);
-
-  @override
-  String toString() {
-    return "$runtimeType: ${message.toString()}";
-  }
 }
